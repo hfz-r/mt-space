@@ -1,0 +1,64 @@
+version: '3.4'
+
+services:
+  seq:
+    environment:
+      - ACCEPT_EULA=Y
+    ports:
+      - "5340:80"
+
+  redis-cache: 
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-cache:/data
+
+  rabbitmq:
+    ports:
+      - "15672:15672"
+      - "5672:5672"
+
+  envoy-proxy:
+    environment:
+      - ENVOY_UID=0
+    ports:
+      - "8080:80"
+      - "8443:443"
+      - "8001:8001"
+    volumes: 
+      - ./Proto/proto.pb:/etc/envoy/proto.pb
+      - ./ApiGateways/Envoy/envoy.yaml:/etc/envoy/envoy.yaml
+      - ./ApiGateways/Envoy/ssl:/etc/envoy/tls
+
+  investor-service:
+    environment:
+      - ApplicationInsights__InstrumentationKey=${INSTRUMENTATION_KEY}
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_URLS=http://+:80
+      - ConnectionString=Server=DBDEVSVR\UAT;Database=Commission;User Id=sa;Password=password;
+      - EventBusConnection=rabbitmq
+      - GRPC_PORT=81
+      - ORCHESTRATOR_TYPE=${ORCHESTRATOR_TYPE}
+      - PATH_BASE=/investor-api
+      - PORT=80
+      - Redis__ConnectionString=redis-cache
+      - Redis__DefaultCacheTime=60
+      - UseRowNumberForPaging=True
+    ports:
+      - "5111:80"
+      - "9101:81"
+
+  webstatus:
+    environment: 
+      - ApplicationInsights__InstrumentationKey=${INSTRUMENTATION_KEY}
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_URLS=http://+:80
+      - HealthChecksUI__HealthChecks__0__Name=Investor HTTP Check
+      - HealthChecksUI__HealthChecks__0__Uri=http://investor-service/hc
+      - ORCHESTRATOR_TYPE=${ORCHESTRATOR_TYPE}
+    ports: 
+      - "5100:80"
+
+volumes:
+  redis-cache:
+    external: false

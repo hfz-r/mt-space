@@ -1,0 +1,29 @@
+version: '3.4'
+
+services:
+  seq:
+    image: datalust/seq:latest
+
+  redis-cache: 
+    image: redis:alpine
+  
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+
+  envoy-proxy:
+    image: envoyproxy/envoy:v1.16-latest
+
+  investor-service:
+    image: ${REGISTRY:-aham}/investor-service:${TAG:-latest}
+    build:
+      context: .
+      dockerfile: Services/Investor/Investor.API/Dockerfile
+    depends_on:
+      - redis-cache
+      - rabbitmq
+
+  webstatus:
+    image: ${REGISTRY:-aham}/webstatus:${TAG:-latest}
+    build:
+      context: .
+      dockerfile: Client/WebStatus/Dockerfile

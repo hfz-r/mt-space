@@ -1,0 +1,35 @@
+version: '3.4'
+
+services:
+  redis-cache-test:
+    ports:
+      - "6379:6379"
+
+  rabbitmq-test:
+    ports:
+      - "15672:15672"
+      - "5672:5672"
+
+  envoy-proxy-test:
+    environment:
+      - ENVOY_UID=0
+    ports:
+      - "8080:80"
+      - "8443:443"
+      - "8001:8001"
+    volumes: 
+      - ./Proto/proto.pb:/etc/envoy/proto.pb
+      - ./ApiGateways/Envoy/test/envoy.yaml:/etc/envoy/envoy.yaml
+      - ./ApiGateways/Envoy/ssl:/etc/envoy/tls/
+
+  investor-service-test:
+    environment:
+      - ApplicationInsights__InstrumentationKey=${INSTRUMENTATION_KEY}
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:80
+      - EventBusConnection=rabbitmq-test
+      - ORCHESTRATOR_TYPE=${ORCHESTRATOR_TYPE}
+      - Redis__ConnectionString=redis-cache-test
+      - Redis__DefaultCacheTime=60
+    ports:
+      - "5111:80"

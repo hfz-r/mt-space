@@ -1,0 +1,37 @@
+syntax = "proto3";
+
+package aham.dto;
+
+option go_package = "aham/dto";
+option csharp_namespace = "AHAM.Services.Dtos.Grpc";
+
+import "google/protobuf/timestamp.proto";
+
+message FeeRebateDTO {
+    InvestorDTO investor = 1;
+    string coa = 2;
+    string type = 3;
+    string currency = 4;
+    string amc = 5;
+    string channel = 6; 
+    string agent = 7;
+    string plan = 8;
+    string drcr = 9;
+    string setup_type = 10;
+    google.protobuf.Timestamp setup_date = 11;
+    string setup_by = 12;
+}
+  
+message InvestorDTO {
+    string investor_id = 1;
+    string investor_name = 2;
+    AddressDTO address = 3;
+}
+
+message AddressDTO {
+    string Street = 1;
+    string City = 2;
+    string State = 3;
+    string Country = 4;
+    string ZipCode = 5;
+}

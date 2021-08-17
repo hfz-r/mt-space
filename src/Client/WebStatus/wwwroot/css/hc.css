@@ -1,0 +1,8 @@
+﻿:root {
+    --primaryColor: #192d49;
+    --secondaryColor: #f4f4f4;
+    --bgMenuActive: #1e6e25;
+    --bgButton: #192d49;
+    --logoImageUrl: url('https://i.ibb.co/xF2zM92/icon-2x.png');
+    --bgAside: var(--primaryColor);
+}

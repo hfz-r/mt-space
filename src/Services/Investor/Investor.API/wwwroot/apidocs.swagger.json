@@ -1,0 +1,262 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "AHAM MT-Space - Investor HTTP API",
+    "version": "1.0"
+  },
+  "tags": [
+    {
+      "name": "InvestorService"
+    }
+  ],
+  "host": "localhost:8080",
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/rebate/create": {
+      "post": {
+        "summary": "Add rebate",
+        "description": "Add fee rebate to database.",
+        "operationId": "InvestorService_CreateRebate",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/investorCreateRebateResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/investorCreateRebateRequest"
+            }
+          }
+        ],
+        "tags": [
+          "InvestorService"
+        ]
+      }
+    },
+    "/rebates": {
+      "get": {
+        "summary": "List rebates",
+        "description": "List all fee rebates from database.",
+        "operationId": "InvestorService_GetRebates",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/investorGetRebatesResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "investorId",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "coa",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "index",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "from",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "InvestorService"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "dtoAddressDTO": {
+      "type": "object",
+      "properties": {
+        "Street": {
+          "type": "string"
+        },
+        "City": {
+          "type": "string"
+        },
+        "State": {
+          "type": "string"
+        },
+        "Country": {
+          "type": "string"
+        },
+        "ZipCode": {
+          "type": "string"
+        }
+      }
+    },
+    "dtoFeeRebateDTO": {
+      "type": "object",
+      "properties": {
+        "investor": {
+          "$ref": "#/definitions/dtoInvestorDTO"
+        },
+        "coa": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        },
+        "currency": {
+          "type": "string"
+        },
+        "amc": {
+          "type": "string"
+        },
+        "channel": {
+          "type": "string"
+        },
+        "agent": {
+          "type": "string"
+        },
+        "plan": {
+          "type": "string"
+        },
+        "drcr": {
+          "type": "string"
+        },
+        "setupType": {
+          "type": "string"
+        },
+        "setupDate": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "setupBy": {
+          "type": "string"
+        }
+      }
+    },
+    "dtoInvestorDTO": {
+      "type": "object",
+      "properties": {
+        "investorId": {
+          "type": "string"
+        },
+        "investorName": {
+          "type": "string"
+        },
+        "address": {
+          "$ref": "#/definitions/dtoAddressDTO"
+        }
+      }
+    },
+    "investorCreateRebateRequest": {
+      "type": "object",
+      "properties": {
+        "investorId": {
+          "type": "string"
+        },
+        "rebates": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/dtoFeeRebateDTO"
+          }
+        }
+      }
+    },
+    "investorCreateRebateResponse": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "type": "boolean"
+        },
+        "message": {
+          "type": "string"
+        }
+      }
+    },
+    "investorGetRebatesResponse": {
+      "type": "object",
+      "properties": {
+        "rebates": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/dtoFeeRebateDTO"
+          }
+        },
+        "pageCount": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
+    "protobufAny": {
+      "type": "object",
+      "properties": {
+        "typeUrl": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string",
+          "format": "byte"
+        }
+      }
+    },
+    "rpcStatus": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/protobufAny"
+          }
+        }
+      }
+    }
+  }
+}
