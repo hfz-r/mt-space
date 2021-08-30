@@ -11,7 +11,7 @@ services:
     image: rabbitmq:3-management-alpine
 
   envoy-proxy:
-    image: envoyproxy/envoy:v1.16-latest
+    image: envoyproxy/envoy:v1.18-latest
 
   investor-service:
     image: ${REGISTRY:-aham}/investor-service:${TAG:-latest}

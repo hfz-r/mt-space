@@ -9,17 +9,18 @@ import "google/protobuf/timestamp.proto";
 
 message FeeRebateDTO {
     InvestorDTO investor = 1;
-    string coa = 2;
-    string type = 3;
-    string currency = 4;
-    string amc = 5;
-    string channel = 6; 
-    string agent = 7;
-    string plan = 8;
-    string drcr = 9;
-    string setup_type = 10;
-    google.protobuf.Timestamp setup_date = 11;
-    string setup_by = 12;
+    int32 index = 2;
+    string coa = 3;
+    string type = 4;
+    string currency = 5;
+    string amc = 6;
+    string channel = 7; 
+    string agent = 8;
+    string plan = 9;
+    string drcr = 10;
+    string setup_type = 11;
+    google.protobuf.Timestamp setup_date = 12;
+    string setup_by = 13;
 }
   
 message InvestorDTO {

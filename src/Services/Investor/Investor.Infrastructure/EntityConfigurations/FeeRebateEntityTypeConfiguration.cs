@@ -15,8 +15,8 @@ namespace AHAM.Services.Investor.Infrastructure.EntityConfigurations
 
             #region Properties
 
-            builder.Property(b => b.AMC).IsRequired();
-            builder.Property(b => b.COA).IsRequired();
+            builder.Property(b => b.Amc).IsRequired();
+            builder.Property(b => b.Coa).IsRequired();
             builder.Property(b => b.DrCr).IsRequired();
             builder.Property(b => b.Type).IsRequired();
             builder.Property(b => b.SetupDate).IsRequired();

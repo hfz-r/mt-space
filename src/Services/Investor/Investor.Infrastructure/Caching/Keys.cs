@@ -14,6 +14,7 @@ namespace AHAM.Services.Investor.Infrastructure.Caching
         public static string ByIdPrefix => $"AHAM.{EntityName}.by-id.";
 
         public static CacheKey RebatesCacheKey => new CacheKey("AHAM.Rebates.{0}-{1}", RebatesPrefix, Prefix);
+        public static CacheKey InvestorCacheKey => new CacheKey("AHAM.Investor.{0}", RebatesPrefix, Prefix);
         public static string RebatesPrefix => "AHAM.Rebates.";
 
         public static string Prefix => $"AHAM.{EntityName}.";

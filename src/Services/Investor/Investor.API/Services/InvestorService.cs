@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using AHAM.Services.Dtos.Grpc;
 using AHAM.Services.Investor.API.Application.Commands;
@@ -27,44 +28,62 @@ namespace AHAM.Services.Investor.API.Services
 
         public override async Task<GetRebatesResponse> GetRebates(GetRebatesRequest request, ServerCallContext context)
         {
-            _logger.LogInformation("Begin call from method {method} for investor get rebates {GetRebatesRequest}", context.Method, request);
-
-            var response = await _mediator.Send(new GetRebatesQuery {Request = request});
-
-            context.Status = response.Count > 0
-                ? new Status(StatusCode.OK, $" ordering get orders {request} do exist")
-                : new Status(StatusCode.NotFound, $" ordering get orders {request} do not exist");
-
-            return ToResponse();
-
-            #region Local function
-
-            GetRebatesResponse ToResponse()
+            try
             {
-                return new GetRebatesResponse
-                {
-                    Rebates = {_mapper.ProjectTo<FeeRebateDTO>(response.Items.AsQueryable())},
-                    PageCount = response.Pages
-                };
-            }
+                _logger.LogInformation("Begin call from method {method} for investor get rebates {GetRebatesRequest}",
+                    context.Method, request);
 
-            #endregion
+                var response = await _mediator.Send(new GetRebatesQuery {Request = request});
+
+                context.Status = response.Count > 0
+                    ? new Status(StatusCode.OK, $" ordering get orders {request} do exist")
+                    : new Status(StatusCode.NotFound, $" ordering get orders {request} do not exist");
+
+                return ToResponse();
+
+                #region Local function
+
+                GetRebatesResponse ToResponse()
+                {
+                    return new GetRebatesResponse
+                    {
+                        Rebates = {_mapper.ProjectTo<FeeRebateDTO>(response.Items.AsQueryable())},
+                        PageCount = response.Pages
+                    };
+                }
+
+                #endregion
+            }
+            catch (RpcException)
+            {
+                var error = new RpcException(new Status(StatusCode.Internal, "Invalid Request"));
+                throw new Exception(null, error);
+            }
         }
 
-        public override async Task<CreateRebateResponse> CreateRebate(CreateRebateRequest request, ServerCallContext context)
+        public override async Task<CreateRebateResponse> CreateRebate(IAsyncStreamReader<CreateRebateRequest> requestStream, ServerCallContext context)
         {
-            _logger.LogInformation("Begin call from method {method} for investor create rebate {CreateRebateRequest}", context.Method, request);
+            try
+            {
+                await foreach (var request in requestStream.ReadAllAsync())
+                {
+                    _logger.LogInformation("Begin call from method {method} for investor create rebate {CreateRebateRequest}", context.Method, request);
 
-            var command = new IdentifiedCommand<CreateRebateCommand, bool>(new CreateRebateCommand {Request = request}, context.GetRequestIdHeader());
-            var response = await _mediator.Send(command);
+                    var command = new IdentifiedCommand<CreateRebateCommand, bool>(new CreateRebateCommand(request.InvestorId, request.Rebates), context.GetRequestIdHeader());
+                    await _mediator.Send(command);
+                }
 
-            return response
-                ? new CreateRebateResponse
+                return new CreateRebateResponse
                 {
                     Status = true,
                     Message = "Ok"
-                }
-                : throw new RpcException(new Status(StatusCode.Internal, "Invalid Response"));
+                };
+            }
+            catch (RpcException)
+            {
+                var error = new RpcException(new Status(StatusCode.Internal, "Invalid Response"));
+                throw new Exception(null, error);
+            }
         }
     }
 }

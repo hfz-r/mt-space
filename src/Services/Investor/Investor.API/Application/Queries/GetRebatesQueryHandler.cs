@@ -34,13 +34,16 @@ namespace AHAM.Services.Investor.API.Application.Queries
                     queryExp: q =>
                     {
                         if (!string.IsNullOrEmpty(query.Request.InvestorId))
-                            q = q.Where(r => r.GetInvestorId() == query.Request.InvestorId);
+                            q = q?.Where(r => r.Investor.InvestorId == query.Request.InvestorId);
                         if (!string.IsNullOrEmpty(query.Request.Coa))
-                            q = q.Where(r => r.COA == query.Request.Coa);
+                            q = q?.Where(r => r.Coa == query.Request.Coa);
                         return q;
                     },
                     include: q => q.Include(r => r.Investor),
-                    orderBy: q => q.OrderByDescending(r => r.SetupDate),
+                    orderBy: q => q
+                        .OrderByDescending(r => r.SetupDate)
+                        .ThenBy(r => r.Investor.InvestorId)
+                        .ThenBy(r => r.Coa),
                     cacheKey: cache => cache.PrepareKeyForDefaultCache(Keys<FeeRebate>.RebatesCacheKey, query.Request.InvestorId, query.Request.Coa),
                     disableTracking: true,
                     index: query.Request.Index,

@@ -1,4 +1,5 @@
-﻿using AHAM.Services.Dtos.Grpc;
+﻿using System;
+using AHAM.Services.Dtos.Grpc;
 using AHAM.Services.Investor.Domain.AggregatesModel.FeeRebateAggregate;
 using AHAM.Services.Investor.Domain.AggregatesModel.InvestorAggregate;
 using AutoMapper;
@@ -17,13 +18,13 @@ namespace AHAM.Services.Investor.API.Infrastructure.AutoMapper
                     opt.MapFrom(src => src.Agent);
                     opt.NullSubstitute(string.Empty);
                 })
-                .ForMember(d => d.Amc, opt => opt.MapFrom(src => src.AMC))
+                .ForMember(d => d.Amc, opt => opt.MapFrom(src => src.Amc))
                 .ForMember(d => d.Channel, opt =>
                 {
                     opt.MapFrom(src => src.Channel);
                     opt.NullSubstitute(string.Empty);
                 })
-                .ForMember(d => d.Coa, opt => opt.MapFrom(src => src.COA))
+                .ForMember(d => d.Coa, opt => opt.MapFrom(src => src.Coa))
                 .ForMember(d => d.Currency, opt => opt.MapFrom(src => src.GetCurrency()))
                 .ForMember(d => d.Drcr, opt => opt.MapFrom(src => src.DrCr))
                 .ForMember(d => d.Investor, opt => opt.MapFrom(src => src.Investor))
@@ -37,7 +38,11 @@ namespace AHAM.Services.Investor.API.Infrastructure.AutoMapper
                     opt.MapFrom(src => src.SetupBy);
                     opt.NullSubstitute(string.Empty);
                 })
-                .ForMember(d => d.SetupDate, opt => opt.MapFrom(src => Timestamp.FromDateTime(src.SetupDate.ToUniversalTime())))
+                .ForMember(d => d.SetupDate, opt =>
+                {
+                    opt.MapFrom(src => Timestamp.FromDateTime(src.SetupDate.ToUniversalTime()));
+                    opt.NullSubstitute(Timestamp.FromDateTime(DateTime.UtcNow));
+                })
                 .ForMember(d => d.SetupType, opt =>
                 {
                     opt.MapFrom(src => src.SetupType);
@@ -48,6 +53,13 @@ namespace AHAM.Services.Investor.API.Infrastructure.AutoMapper
                     opt.MapFrom(src => src.Type);
                     opt.NullSubstitute(string.Empty);
                 });
+
+            CreateMap<FeeRebateDTO, FeeRebate>()
+                .ForMember(d => d.Id, opt => opt.Ignore())
+                .ForMember(d => d.DomainEvents, opt => opt.Ignore())
+                .ConvertUsing(src => new FeeRebate(src.Amc, src.Agent, src.Channel, src.Coa, 
+                    src.Drcr, src.Plan, src.SetupBy, src.SetupType, src.SetupDate.ToDateTime(), src.Type, 
+                    src.Currency, src.Investor.InvestorId));
 
             CreateMap<Inv, InvestorDTO>()
                 .ForMember(d => d.InvestorId, opt => opt.MapFrom(src => src.InvestorId))

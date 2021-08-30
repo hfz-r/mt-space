@@ -15,7 +15,7 @@ service InvestorService {
     };
   }
 
-  rpc CreateRebate(CreateRebateRequest) returns (CreateRebateResponse) {
+  rpc CreateRebate(stream CreateRebateRequest) returns (CreateRebateResponse) {
     option (google.api.http) = {
       post : "/rebate/create"
       body : "*"

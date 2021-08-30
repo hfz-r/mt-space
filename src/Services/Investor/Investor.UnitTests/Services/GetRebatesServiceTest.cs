@@ -70,7 +70,7 @@ namespace Investor.UnitTests.Services
             //rebate request mock
             var fakeRebateRequest = new GetRebatesRequest {Coa = "CRFR0011"};
             var fakeRebateResult = FakeRebatesAndInvestor()
-                .Where(x => x.COA == fakeRebateRequest.Coa)
+                .Where(x => x.Coa == fakeRebateRequest.Coa)
                 .ToPaginate(0, 20);
 
             _mediatorMock

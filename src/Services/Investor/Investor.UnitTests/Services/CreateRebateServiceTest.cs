@@ -1,7 +1,7 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using AHAM.Services.Investor.API.Application.Commands;
-using AHAM.Services.Investor.API.Services;
+using AHAM.Services.Investor.Grpc;
 using AutoMapper;
 using Investor.UnitTests.Helpers;
 using MediatR;
@@ -9,6 +9,7 @@ using Microsoft.Extensions.Logging;
 using Moq;
 using Xunit;
 using static Investor.UnitTests.FakeData;
+using InvestorService = AHAM.Services.Investor.API.Services.InvestorService;
 
 namespace Investor.UnitTests.Services
 {
@@ -30,16 +31,20 @@ namespace Investor.UnitTests.Services
         {
             //Arrange
             var callContext = TestServerCallContext.Create();
-
-            var fakeRebateRequest = FakeCreateRebateRequest();
+            var requestStream = new TestAsyncStreamReader<CreateRebateRequest>(callContext);
 
             _mediatorMock.Setup(x => x.Send(It.IsAny<IdentifiedCommand<CreateRebateCommand, bool>>(), CancellationToken.None)).ReturnsAsync(true);
 
             //Act
             var service = new InvestorService(_mapperMock.Object, _mediatorMock.Object, _loggerMock.Object);
-            var response = await service.CreateRebate(fakeRebateRequest, callContext);
+            using var call = service.CreateRebate(requestStream, callContext);
+
+            requestStream.AddMessage(FakeCreateRebateRequest1());
+            requestStream.AddMessage(FakeCreateRebateRequest2());
+            requestStream.Complete();
 
             //Assert
+            var response = await call;
             Assert.True(response.Status);
         }
     }

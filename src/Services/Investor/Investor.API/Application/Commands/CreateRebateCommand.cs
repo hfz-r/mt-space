@@ -1,23 +1,18 @@
-﻿using AHAM.Services.Investor.API.Application.Validations;
-using AHAM.Services.Investor.Grpc;
-using FluentValidation;
+﻿using System.Collections.Generic;
+using AHAM.Services.Dtos.Grpc;
 using MediatR;
-using Microsoft.Extensions.Logging;
 
 namespace AHAM.Services.Investor.API.Application.Commands
 {
     public class CreateRebateCommand : IRequest<bool>
     {
-        public CreateRebateRequest Request { get; set; }
-    }
+        public string InvestorId { get; }
+        public IList<FeeRebateDTO> List { get; }
 
-    public class CommandValidator : AbstractValidator<CreateRebateCommand>
-    {
-        public CommandValidator(ILogger<CommandValidator> logger)
+        public CreateRebateCommand(string investorId, IList<FeeRebateDTO> list)
         {
-            RuleFor(x => x.Request).SetValidator(new CreateRebateCommandValidator());
-
-            logger.LogTrace("----- INSTANCE CREATED - {ClassName}", GetType().Name);
+            InvestorId = investorId;
+            List = list;
         }
     }
 }

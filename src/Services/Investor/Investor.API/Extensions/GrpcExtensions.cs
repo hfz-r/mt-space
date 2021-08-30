@@ -11,7 +11,7 @@ namespace AHAM.Services.Investor.API.Extensions
             var header = context.RequestHeaders.FirstOrDefault(e => e.Key == "x-requestid");
             Guid.TryParse(header?.Value, out var guid);
             
-            return guid != Guid.Empty ? guid : Guid.Empty;
+            return guid != Guid.Empty ? guid : Guid.NewGuid();
         }
     }
 }

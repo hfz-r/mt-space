@@ -30,16 +30,16 @@ namespace Investor.UnitTests.Application
         public async Task Identified_handler_should_work_test(bool exist)
         {
             // Arrange
-            var fakeCommand = new CreateRebateCommand {Request = FakeCreateRebateRequest()};
+            var fakeRequest = FakeCreateRebateRequest1();
             var fakeGuid = Guid.NewGuid();
-            var fakeRequest = new IdentifiedCommand<CreateRebateCommand, bool>(fakeCommand, fakeGuid);
+            var fakeCommand = new IdentifiedCommand<CreateRebateCommand, bool>(new CreateRebateCommand(fakeRequest.InvestorId, fakeRequest.Rebates), fakeGuid);
 
             _requestManagerMock.Setup(x => x.ExistAsync(It.IsAny<Guid>())).ReturnsAsync(exist);
             _mediatorMock.Setup(x => x.Send(It.IsAny<IRequest<bool>>(), default)).ReturnsAsync(true);
 
             //Act
             var handler = new IdentifiedCommandHandler<CreateRebateCommand, bool>(_mediatorMock.Object, _requestManagerMock.Object, _loggerMock.Object);
-            var result = await handler.Handle(fakeRequest, CancellationToken.None);
+            var result = await handler.Handle(fakeCommand, CancellationToken.None);
 
             //Assert
             if (!exist)
