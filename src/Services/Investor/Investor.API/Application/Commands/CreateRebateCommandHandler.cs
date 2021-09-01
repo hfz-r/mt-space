@@ -38,10 +38,9 @@ namespace AHAM.Services.Investor.API.Application.Commands
             try
             {
                 var o = await repository.GetListAsync(
-                    q => q.GetInvestorId() == command.InvestorId,
+                    q => q.Investor.InvestorId == command.InvestorId,
                     include: q => q.Include(r => r.Investor),
-                    orderBy: q => q.OrderBy(r => r.Coa),
-                    cacheKey: cache => cache.PrepareKeyForDefaultCache(Keys<FeeRebate>.InvestorCacheKey, command.InvestorId),
+                    cacheKey: cache => cache.PrepareKeyForDefaultCache(Keys<FeeRebate>.ByIdCacheKey, command.InvestorId),
                     disableTracking: true,
                     cancellationToken: cancellationToken
                 );
@@ -49,27 +48,25 @@ namespace AHAM.Services.Investor.API.Application.Commands
                 if (o.Count > 0)
                 {
                     var l = new List<FeeRebate>();
-                    for (int i = 0; i < command.List.Count; i++)
+                    foreach (var dto in command.List)
                     {
-                        var r1 = o[i];
+                        var r = await repository.FindAsync(dto.Id);
+                        if (dto.Type == "deleted")
+                        {
+                            repository.Delete(r);
+                            continue;
+                        }
+                        if (r != null)
+                        {
+                            if (r.Coa != dto.Coa) r.SetCoa(dto.Coa);
+                            if (r.SetupDate != dto.SetupDate.ToDateTime()) r.SetSetupDate(dto.SetupDate.ToDateTime());
+                            if (r.DrCr != dto.Drcr) r.SetDrCr(dto.Drcr);
+                            if (r.GetCurrency() != dto.Currency) r.SetCurrency(dto.Currency);
+                        }
+                        else r = _mapper.Map<FeeRebateDTO, FeeRebate>(dto);
 
+                        l.Add(r);
                     }
-                    //foreach (var dto in command.List)
-                    //{
-                    //    var r = await repository.SingleAsync(
-                    //        ro => ro.Investor.InvestorId == command.InvestorId && ro.Coa == dto.Coa,
-                    //        disableTracking: true,
-                    //        cancellationToken: cancellationToken);
-                    //    if (r != null)
-                    //    {
-                    //        r.SetCoa(dto.Coa);
-                    //        r.SetSetupDate(dto.SetupDate.ToDateTime());
-                    //        if (r.DrCr != dto.Drcr) r.SetDrCr(dto.Drcr);
-                    //        if (r.GetCurrency() != dto.Currency) r.SetCurrency(dto.Currency);
-                    //    }
-                    //    else r = _mapper.Map<FeeRebateDTO, FeeRebate>(dto);
-                    //    l.Add(r);
-                    //}
 
                     _logger.LogInformation("----- Updating FeeRebate - FeeRebate: {@FeeRebate}", "");
                     repository.Update(l);
@@ -82,6 +79,8 @@ namespace AHAM.Services.Investor.API.Application.Commands
                     _logger.LogInformation("----- Creating FeeRebate - FeeRebate: {@FeeRebate}", "");
                     await repository.AddAsync(lfe, cancellationToken);
                 }
+
+                await repository.RemoveByPrefixAsync(Keys<FeeRebate>.Prefix);
 
                 //publish @domain-event
                 return await _worker.SaveEntitiesAsync(cancellationToken);

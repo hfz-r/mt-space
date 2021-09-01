@@ -13,6 +13,9 @@ namespace AHAM.Services.Investor.API.Application.Validations
             RuleForEach(command => command.List)
                 .ChildRules(list =>
                 {
+                    list.RuleFor(child => child.Id)
+                        .NotNull()
+                        .WithMessage("Id is required.");
                     list.RuleFor(child => child.Coa)
                         .NotEmpty()
                         .WithMessage("COA is required.");

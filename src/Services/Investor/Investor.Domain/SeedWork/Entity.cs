@@ -9,7 +9,7 @@ namespace AHAM.Services.Investor.Domain.SeedWork
         private int? _requestedHashCode;
         private List<INotification> _domainEvents;
 
-        public virtual int Id { get; protected set; }
+        [JsonProperty] public virtual int Id { get; protected set; }
 
         [JsonIgnore]
         public IReadOnlyCollection<INotification> DomainEvents => _domainEvents?.AsReadOnly();

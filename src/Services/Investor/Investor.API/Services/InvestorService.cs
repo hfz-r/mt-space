@@ -30,8 +30,7 @@ namespace AHAM.Services.Investor.API.Services
         {
             try
             {
-                _logger.LogInformation("Begin call from method {method} for investor get rebates {GetRebatesRequest}",
-                    context.Method, request);
+                _logger.LogInformation("Begin call from method {method} for investor get rebates {GetRebatesRequest}", context.Method, request);
 
                 var response = await _mediator.Send(new GetRebatesQuery {Request = request});
 

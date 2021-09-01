@@ -43,11 +43,11 @@ namespace AHAM.Services.Investor.Infrastructure.Repositories
             bool disableTracking = false,
             CancellationToken cancellationToken = default);
 
+        Task<T> FindAsync(params object[] keys);
         Task AddAsync(T entity, CancellationToken cancellationToken = default);
         Task AddAsync(params T[] entities);
         Task AddAsync(IEnumerable<T> entities, CancellationToken cancellationToken = default);
-        Task DeleteAsync(T entity);
-        Task DeleteAsync(object id);
+        void Delete(T entity);
         void Delete(params T[] entities);
         void Delete(IEnumerable<T> entities);
         void Update(T entity);

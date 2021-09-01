@@ -9,7 +9,7 @@ import "google/protobuf/timestamp.proto";
 
 message FeeRebateDTO {
     InvestorDTO investor = 1;
-    int32 index = 2;
+    int32 id = 2;
     string coa = 3;
     string type = 4;
     string currency = 5;

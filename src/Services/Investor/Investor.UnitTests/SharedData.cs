@@ -35,25 +35,14 @@ namespace Investor.UnitTests
             return new[] {rebate1, rebate2};
         }
 
-        public static IList<FeeRebate> FakeIndexesData()
-        {
-            return new List<FeeRebate>
-            {
-                new FeeRebate("AFC", "", "", "CR123", "C", "", "", "", DateTime.UtcNow, "Rebate", "EUR", "0000057"),
-                new FeeRebate("AFC", "", "", "CR123456", "C", "", "", "", DateTime.UtcNow, "Rebate", "EUR", "0000057"),
-                new FeeRebate("AFC", "", "", "CRFR0011C", "C", "", "", "", DateTime.UtcNow, "Rebate", "MYR", "0000057"),
-                new FeeRebate("AFC", "", "", "CR456", "C", "", "", "", DateTime.UtcNow, "Rebate", "GBP", "0000057"),
-                new FeeRebate("AFC", "", "", "CR789", "C", "", "", "", DateTime.UtcNow, "Rebate", "AUD", "0000057"),
-                new FeeRebate("AFC", "", "", "CRPA0005", "C", "", "", "", DateTime.UtcNow, "Rebate", "MYR", "0000057"),
-            };
-        }
-
         public static IList<Inv> FakeInvestors()
         {
             return new List<Inv>
             {
-                new Inv("0023170-1", "DB (M) NOMINEE (T) S/B", new Address("18 Street Fighter Kick Boobs", "Boobs Kicker City", "State 1", "Count 1", "001")),
-                new Inv("0012137", "TOKIO MARINE INSURANS (MALAYSIA) BERHAD", new Address("7, Street of Tokio Insurans", "Red Shit Village", "Sungai Taik", "Malaysia", "48050")),
+                new Inv("0023170-1", "DB (M) NOMINEE (T) S/B",
+                    new Address("18 Street Fighter Kick Boobs", "Boobs Kicker City", "State 1", "Count 1", "001")),
+                new Inv("0012137", "TOKIO MARINE INSURANS (MALAYSIA) BERHAD",
+                    new Address("7, Street of Tokio Insurans", "Red Shit Village", "Sungai Taik", "Malaysia", "48050")),
             };
         }
 
@@ -64,7 +53,7 @@ namespace Investor.UnitTests
             Address = new AddressDTO()
         };
 
-        public static CreateRebateRequest FakeCreateRebateRequest1()  
+        public static CreateRebateRequest FakeCreateRebateRequest1()
         {
             var dto = new FeeRebateDTO
             {
@@ -110,65 +99,6 @@ namespace Investor.UnitTests
             var request = new CreateRebateRequest();
             request.InvestorId = "FakeId";
             request.Rebates.Add(dto);
-
-            return request;
-        }
-
-        public static CreateRebateRequest FakeIndexesRequest()
-        {
-            var dto1 = new FeeRebateDTO
-            {
-                Coa = "CR123",
-                Type = "Rebate",
-                Amc = "A1",
-                Currency = "USD",
-                Drcr = "C",
-                SetupDate = Timestamp.FromDateTime(DateTime.UtcNow),
-            };
-            var dto2 = new FeeRebateDTO
-            {
-                Coa = "CR123456",
-                Type = "Rebate",
-                Amc = "A2",
-                Currency = "EUR",
-                Drcr = "C",
-                SetupDate = Timestamp.FromDateTime(DateTime.UtcNow),
-            };
-            var dto3 = new FeeRebateDTO
-            {
-                Coa = "CR789",
-                Type = "Rebate",
-                Amc = "A3",
-                Currency = "AUD",
-                Drcr = "C",
-                SetupDate = Timestamp.FromDateTime(DateTime.UtcNow),
-            };
-            var dto4 = new FeeRebateDTO
-            {
-                Coa = "CRFR0011C",
-                Type = "Rebate",
-                Amc = "A4",
-                Currency = "MYR",
-                Drcr = "C",
-                SetupDate = Timestamp.FromDateTime(DateTime.UtcNow),
-            };
-            var dto5 = new FeeRebateDTO
-            {
-                Coa = "CRPA0005",
-                Type = "Rebate",
-                Amc = "A5",
-                Currency = "MYR",
-                Drcr = "C",
-                SetupDate = Timestamp.FromDateTime(DateTime.UtcNow),
-            };
-
-            var request = new CreateRebateRequest();
-            request.InvestorId = "0000057";
-            request.Rebates.Add(dto1);
-            request.Rebates.Add(dto2);
-            request.Rebates.Add(dto3);
-            request.Rebates.Add(dto4);
-            request.Rebates.Add(dto5);
 
             return request;
         }

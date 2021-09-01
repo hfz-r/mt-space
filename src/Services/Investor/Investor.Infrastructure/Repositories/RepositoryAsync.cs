@@ -119,6 +119,11 @@ namespace AHAM.Services.Investor.Infrastructure.Repositories
             return new Paginate<T>(list, index, size, from);
         }
 
+        public async Task<T> FindAsync(params object[] keys)
+        {
+            return await _dbSet.FindAsync(keys);
+        }
+
         public async Task AddAsync(T entity, CancellationToken cancellationToken = default)
         {
             await _dbSet.AddAsync(entity, cancellationToken);
@@ -134,30 +139,9 @@ namespace AHAM.Services.Investor.Infrastructure.Repositories
             await _dbSet.AddRangeAsync(entities, cancellationToken);
         }
 
-        public async Task DeleteAsync(T entity)
+        public void Delete(T entity)
         {
-            var existing = await _dbSet.FindAsync(entity);
-            if (existing != null) _dbSet.Remove(existing);
-        }
-
-        public async Task DeleteAsync(object id)
-        {
-            if (!(_dbContext is { } dbContext)) throw new InvalidOperationException("Context does not support operation");
-
-            var typeInfo = typeof(T).GetTypeInfo();
-            var key = dbContext.Model.FindEntityType(typeInfo).FindPrimaryKey().Properties.FirstOrDefault();
-            var property = typeInfo.GetProperty(key?.Name ?? throw new InvalidOperationException());
-            if (property != null)
-            {
-                var entity = Activator.CreateInstance<T>();
-                property.SetValue(entity, id);
-                dbContext.Entry(entity).State = EntityState.Deleted;
-            }
-            else
-            {
-                var entity = await _dbSet.FindAsync(id);
-                if (entity != null) await DeleteAsync(entity);
-            }
+            _dbSet.Remove(entity);
         }
 
         public void Delete(params T[] entities)

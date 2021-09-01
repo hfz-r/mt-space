@@ -13,6 +13,7 @@ namespace AHAM.Services.Investor.API.Infrastructure.AutoMapper
         public AutoMapperProfile()
         {
             CreateMap<FeeRebate, FeeRebateDTO>()
+                .ForMember(d => d.Id, opt => opt.MapFrom(src => src.Id))
                 .ForMember(d => d.Agent, opt =>
                 {
                     opt.MapFrom(src => src.Agent);
@@ -55,8 +56,8 @@ namespace AHAM.Services.Investor.API.Infrastructure.AutoMapper
                 });
 
             CreateMap<FeeRebateDTO, FeeRebate>()
-                .ForMember(d => d.Id, opt => opt.Ignore())
                 .ForMember(d => d.DomainEvents, opt => opt.Ignore())
+                .ForMember(d => d.Id, opt => opt.MapFrom(src => src.Id))
                 .ConvertUsing(src => new FeeRebate(src.Amc, src.Agent, src.Channel, src.Coa, 
                     src.Drcr, src.Plan, src.SetupBy, src.SetupType, src.SetupDate.ToDateTime(), src.Type, 
                     src.Currency, src.Investor.InvestorId));

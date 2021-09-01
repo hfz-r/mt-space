@@ -102,26 +102,5 @@ namespace Investor.UnitTests.Application
             Assert.True(fakeResult.Count > 0);
             Assert.Equal("CRFR0011", fakeResult[0].Coa);
         }
-
-        [Fact]
-        public async Task Command_handler_index_update_test()
-        {
-            //Arrange
-            var fakeRequest = FakeIndexesRequest();
-            var fakeData = FakeIndexesData();
-            var fakeResult = new List<FeeRebate>();
-
-            CreateMockDbSet(fakeData.AsQueryable(), context =>
-                context
-                    .Setup(x => x.Set<FeeRebate>().UpdateRange(It.IsAny<IEnumerable<FeeRebate>>()))
-                    .Callback((IEnumerable<FeeRebate> rebates) => fakeResult.AddRange(rebates)));
-
-            //Act
-            var handler = new CreateRebateCommandHandler(_workerMock.Object, _fixture.Mapper, _integrationEventMock.Object, _loggerMock.Object);
-            var result = await handler.Handle(new CreateRebateCommand(fakeRequest.InvestorId, fakeRequest.Rebates), CancellationToken.None);
-
-            //Assert
-            Assert.True(result);
-        }
     }
 }

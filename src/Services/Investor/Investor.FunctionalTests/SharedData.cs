@@ -16,26 +16,28 @@ namespace Investor.FunctionalTests
                 {
                     new FeeRebateDTO
                     {
-                        Amc = "AFC1",
-                        Agent = "AGENT1",
-                        Channel = "CHANNEL1",
+                        Id = 882,
+                        Amc = "AFCX",
+                        Agent = "AGENTX",
+                        Channel = "CHANNELX",
                         Coa = "CRFR0011A",
                         Currency = "AUD",
-                        Drcr = "C",
+                        Drcr = "X",
                         Investor = new InvestorDTO
                         {
                             InvestorId = "0023170-1",
                             InvestorName = "DB (M) NOMINEE (T) S/B",
                             Address = new AddressDTO()
                         },
-                        Plan = "A",
+                        Plan = "X",
                         SetupBy = "test-user",
-                        SetupType = "A",
+                        SetupType = "X",
                         SetupDate = Timestamp.FromDateTime(DateTime.UtcNow),
-                        Type = "RebateA"
+                        Type = "RebateX"
                     },
                     new FeeRebateDTO
                     {
+                        Id = 883,
                         Amc = "AFC2",
                         Agent = "AGENT2",
                         Channel = "CHANNEL2",
@@ -54,6 +56,27 @@ namespace Investor.FunctionalTests
                         SetupDate = Timestamp.FromDateTime(DateTime.UtcNow),
                         Type = "RebateB"
                     },
+                    new FeeRebateDTO
+                    {
+                        Id = 900,
+                        Amc = "AFCY",
+                        Agent = "AGENTY",
+                        Channel = "CHANNELY",
+                        Coa = "COA666Y",
+                        Currency = "AUD",
+                        Drcr = "Y",
+                        Investor = new InvestorDTO
+                        {
+                            InvestorId = "0023170-1",
+                            InvestorName = "DB (M) NOMINEE (T) S/B",
+                            Address = new AddressDTO()
+                        },
+                        Plan = "Y",
+                        SetupBy = "test-user",
+                        SetupType = "Y",
+                        SetupDate = Timestamp.FromDateTime(DateTime.UtcNow),
+                        Type = "deleted"
+                    },
                 }
             };
             var req2 = new CreateRebateRequest
@@ -63,6 +86,7 @@ namespace Investor.FunctionalTests
                 {
                     new FeeRebateDTO
                     {
+                        Id = 884,
                         Amc = "AFC3",
                         Agent = "AGENT3",
                         Channel = "CHANNEL3",
@@ -80,6 +104,27 @@ namespace Investor.FunctionalTests
                         SetupType = "C",
                         SetupDate = Timestamp.FromDateTime(DateTime.UtcNow),
                         Type = "RebateC"
+                    },
+                    new FeeRebateDTO
+                    {
+                        Id = 0,
+                        Amc = "AFCX",
+                        Agent = "AGENTX",
+                        Channel = "CHANNELX",
+                        Coa = "CRFR0011A",
+                        Currency = "AUD",
+                        Drcr = "X",
+                        Investor = new InvestorDTO
+                        {
+                            InvestorId = "0000057",
+                            InvestorName = "AFFIN HWANG INVESTMENT BANK BERHAD",
+                            Address = new AddressDTO()
+                        },
+                        Plan = "X",
+                        SetupBy = "test-user",
+                        SetupType = "X",
+                        SetupDate = Timestamp.FromDateTime(DateTime.UtcNow),
+                        Type = "RebateX"
                     },
                 }
             };

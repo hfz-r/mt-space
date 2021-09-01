@@ -3,10 +3,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using AHAM.Services.Investor.API.Application.IntegrationEvents;
 using AHAM.Services.Investor.API.Application.IntegrationEvents.Events;
-using AHAM.Services.Investor.Domain.AggregatesModel.FeeRebateAggregate;
 using AHAM.Services.Investor.Domain.Events;
 using AHAM.Services.Investor.Domain.Exceptions;
-using AHAM.Services.Investor.Infrastructure.Caching;
 using AHAM.Services.Investor.Infrastructure.Repositories;
 using MediatR;
 using Microsoft.Extensions.Logging;
@@ -39,10 +37,7 @@ namespace AHAM.Services.Investor.API.Application.DomainEvents
                 var rebate = rebateEvent.Rebate;
                 rebate.SetInvestorId(investor.InvestorId);
 
-                _logger.LogInformation("----- Finalizing Rebate - FeeRebate: {@Rebate}", rebate);
-
                 await _worker.SaveEntitiesAsync(cancellationToken);
-                await repository.RemoveByPrefixAsync(Keys<FeeRebate>.RebatesPrefix);
 
                 //@integration-event
                 var rebateCreated = new RebateCreatedIntegrationEvent();
