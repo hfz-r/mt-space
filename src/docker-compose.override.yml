@@ -57,7 +57,11 @@ services:
       - HealthChecksUI__HealthChecks__0__Uri=http://investor-service/hc
       - ORCHESTRATOR_TYPE=${ORCHESTRATOR_TYPE}
     ports: 
-      - "5100:80"
+      - "5122:80"
+
+  web-app:
+    ports: 
+      - "5133:80"
 
 volumes:
   redis-cache:
