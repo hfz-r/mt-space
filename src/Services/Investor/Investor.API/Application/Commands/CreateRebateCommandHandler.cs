@@ -40,7 +40,6 @@ namespace AHAM.Services.Investor.API.Application.Commands
                 var o = await repository.GetListAsync(
                     q => q.Investor.InvestorId == command.InvestorId,
                     include: q => q.Include(r => r.Investor),
-                    cacheKey: cache => cache.PrepareKeyForDefaultCache(Keys<FeeRebate>.ByIdCacheKey, command.InvestorId),
                     disableTracking: true,
                     cancellationToken: cancellationToken
                 );

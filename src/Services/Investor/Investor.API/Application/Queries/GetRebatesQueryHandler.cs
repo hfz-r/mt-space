@@ -44,7 +44,11 @@ namespace AHAM.Services.Investor.API.Application.Queries
                         .OrderByDescending(r => r.SetupDate)
                         .ThenBy(r => r.Investor.InvestorId)
                         .ThenBy(r => r.Coa),
-                    cacheKey: cache => cache.PrepareKeyForDefaultCache(Keys<FeeRebate>.ListCacheKey, query.Request.InvestorId, query.Request.Coa),
+                    cacheKey: cache => cache
+                        .PrepareKeyForDefaultCache(Keys<FeeRebate>.ListCacheKey,
+                            query.Request.Size,
+                            query.Request.InvestorId,
+                            query.Request.Coa),
                     disableTracking: true,
                     index: query.Request.Index,
                     size: query.Request.Size,

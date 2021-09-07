@@ -13,7 +13,7 @@ namespace AHAM.Services.Investor.Infrastructure.Caching
         public static CacheKey ByIdCacheKey => new CacheKey($"AHAM.{EntityName}.by-id.{{0}}", ByIdPrefix, Prefix);
         public static string ByIdPrefix => $"AHAM.{EntityName}.by-id.";
 
-        public static CacheKey ListCacheKey => new CacheKey($"AHAM.{EntityName}.list.{{0}}-{{1}}", ListPrefix, Prefix);
+        public static CacheKey ListCacheKey => new CacheKey($"AHAM.{EntityName}.list.{{0}}-{{1}}-{{2}}", ListPrefix, Prefix);
         public static string ListPrefix => $"AHAM.{EntityName}.list";
 
         //universal prefix

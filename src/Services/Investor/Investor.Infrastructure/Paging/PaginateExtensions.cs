@@ -9,7 +9,7 @@ namespace AHAM.Services.Investor.Infrastructure.Paging
 {
     public static class PaginateExtensions
     {
-        public static IPaginate<T> ToPaginate<T>(this IEnumerable<T> source, int index, int size, int from = 0)
+        public static IPaginate<T> ToPaginate<T>(this IList<T> source, int index, int size, int from = 0)
         {
             return new Paginate<T>(source, index, size, from);
         }

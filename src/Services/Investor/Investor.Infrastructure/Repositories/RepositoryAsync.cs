@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using AHAM.BuildingBlocks.RedisCache;
@@ -103,7 +102,7 @@ namespace AHAM.Services.Investor.Infrastructure.Repositories
             return await FromCacheAsync(FetchAsync, cacheKey);
         }
 
-        public async Task<IPaginate<T>> GetPagedListAsync(
+        public async Task<Paginate<T>> GetPagedListAsync(
             Expression<Func<T, bool>> predicate = null,
             Func<IQueryable<T>, IQueryable<T>> queryExp = null,
             Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null,
@@ -115,8 +114,25 @@ namespace AHAM.Services.Investor.Infrastructure.Repositories
             bool disableTracking = false,
             CancellationToken cancellationToken = default)
         {
-            var list = await GetListAsync(predicate, queryExp, orderBy, include, cacheKey, disableTracking, cancellationToken);
-            return new Paginate<T>(list, index, size, from);
+            async Task<Paginate<T>> FetchAsync()
+            {
+                IQueryable<T> query = _dbSet;
+
+                if (disableTracking) query = query.AsNoTracking();
+
+                if (include != null) query = include(query);
+
+                if (queryExp != null) query = queryExp(query);
+
+                if (predicate != null) query = query.Where(predicate);
+
+                return new Paginate<T>(
+                    orderBy != null
+                        ? await orderBy(query).ToListAsync(cancellationToken)
+                        : await query.ToListAsync(cancellationToken), index, size, from);
+            }
+
+            return await FromCacheAsync(FetchAsync, cacheKey);
         }
 
         public async Task<T> FindAsync(params object[] keys)

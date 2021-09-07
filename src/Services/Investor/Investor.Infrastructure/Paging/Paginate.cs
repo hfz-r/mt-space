@@ -1,36 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Newtonsoft.Json;
 
 namespace AHAM.Services.Investor.Infrastructure.Paging
 {
     public class Paginate<T> : IPaginate<T>
     {
-        internal Paginate(IEnumerable<T> source, int index, int size, int from)
+        public Paginate(IList<T> items, int index, int size, int from)
         {
-            var enumerable = source as T[] ?? source.ToArray();
+            if (items == null) throw new ArgumentNullException(nameof(items));
+            if (from > index) throw new ArgumentException($"indexFrom: {from} > pageIndex: {index}, must indexFrom <= pageIndex");
 
-            if (from > index)
-                throw new ArgumentException($"indexFrom: {from} > pageIndex: {index}, must indexFrom <= pageIndex");
-
-            if (source is IQueryable<T> query)
-            {
-                Index = index;
-                Size = size;
-                From = from;
-                Count = query.Count();
-                Pages = (int) Math.Ceiling(Count / (double) Size);
-                Items = query.Skip((Index - From) * Size).Take(Size).ToList();
-            }
-            else
-            {
-                Index = index;
-                Size = size;
-                From = from;
-                Count = enumerable.Count();
-                Pages = (int) Math.Ceiling(Count / (double) Size);
-                Items = enumerable.Skip((Index - From) * Size).Take(Size).ToList();
-            }
+            Index = index;
+            Size = size;
+            From = from;
+            Count = items.Count();
+            Pages = (int) Math.Ceiling(Count / (double) Size);
+            Items = items.Skip((Index - From) * Size).Take(Size).ToList();
         }
 
         internal Paginate()
@@ -114,8 +101,7 @@ namespace AHAM.Services.Investor.Infrastructure.Paging
             return new Paginate<T>();
         }
 
-        public static IPaginate<TResult> From<TResult, TSource>(IPaginate<TSource> source,
-            Func<IEnumerable<TSource>, IEnumerable<TResult>> converter)
+        public static IPaginate<TResult> From<TResult, TSource>(IPaginate<TSource> source, Func<IEnumerable<TSource>, IEnumerable<TResult>> converter)
         {
             return new Paginate<TSource, TResult>(source, converter);
         }

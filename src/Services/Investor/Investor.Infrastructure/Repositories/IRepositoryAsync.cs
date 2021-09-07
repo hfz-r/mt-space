@@ -31,7 +31,7 @@ namespace AHAM.Services.Investor.Infrastructure.Repositories
             bool disableTracking = false,
             CancellationToken cancellationToken = default);
 
-        Task<IPaginate<T>> GetPagedListAsync(
+        Task<Paginate<T>> GetPagedListAsync(
             Expression<Func<T, bool>> predicate = null,
             Func<IQueryable<T>, IQueryable<T>> queryExp = null,
             Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null,
