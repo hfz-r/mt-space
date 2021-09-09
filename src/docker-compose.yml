@@ -13,11 +13,11 @@ services:
   envoy-proxy:
     image: envoyproxy/envoy:v1.18-latest
 
-  investor-service:
-    image: ${REGISTRY:-aham}/investor-service:${TAG:-latest}
+  commission-service:
+    image: ${REGISTRY:-aham}/commission-service:${TAG:-latest}
     build:
       context: .
-      dockerfile: Services/Investor/Investor.API/Dockerfile
+      dockerfile: Services/Commission/Commission.API/Dockerfile
     depends_on:
       - redis-cache
       - rabbitmq

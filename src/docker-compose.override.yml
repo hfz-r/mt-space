@@ -30,7 +30,7 @@ services:
       - ./ApiGateways/Envoy/envoy.yaml:/etc/envoy/envoy.yaml
       - ./ApiGateways/Envoy/ssl:/etc/envoy/tls
 
-  investor-service:
+  commission-service:
     environment:
       - ApplicationInsights__InstrumentationKey=${INSTRUMENTATION_KEY}
       - ASPNETCORE_ENVIRONMENT=Production
@@ -39,7 +39,7 @@ services:
       - EventBusConnection=rabbitmq
       - GRPC_PORT=81
       - ORCHESTRATOR_TYPE=${ORCHESTRATOR_TYPE}
-      - PATH_BASE=/investor-api
+      - PATH_BASE=/commission-api
       - PORT=80
       - Redis__ConnectionString=redis-cache
       - Redis__DefaultCacheTime=60
@@ -53,8 +53,8 @@ services:
       - ApplicationInsights__InstrumentationKey=${INSTRUMENTATION_KEY}
       - ASPNETCORE_ENVIRONMENT=Production
       - ASPNETCORE_URLS=http://+:80
-      - HealthChecksUI__HealthChecks__0__Name=Investor HTTP Check
-      - HealthChecksUI__HealthChecks__0__Uri=http://investor-service/hc
+      - HealthChecksUI__HealthChecks__0__Name=Commission HTTP Check
+      - HealthChecksUI__HealthChecks__0__Uri=http://commission-service/hc
       - ORCHESTRATOR_TYPE=${ORCHESTRATOR_TYPE}
     ports: 
       - "5122:80"

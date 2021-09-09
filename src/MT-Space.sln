@@ -17,23 +17,23 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EventBusRabbitMQ", "Buildin
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{A9A304CA-58DE-4E93-9E10-EE70C23A3A5A}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Investor", "Investor", "{1501534B-093A-4E42-9A20-D84BF2238421}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Commission", "Commission", "{1501534B-093A-4E42-9A20-D84BF2238421}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Investor.API", "Services\Investor\Investor.API\Investor.API.csproj", "{EF14A282-200F-44F9-BDDD-9796C5F75F60}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Commission.API", "Services\Commission\Commission.API\Commission.API.csproj", "{EF14A282-200F-44F9-BDDD-9796C5F75F60}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Investor.Domain", "Services\Investor\Investor.Domain\Investor.Domain.csproj", "{7908BA16-D199-4925-B2EA-5045449D7683}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Commission.Domain", "Services\Commission\Commission.Domain\Commission.Domain.csproj", "{7908BA16-D199-4925-B2EA-5045449D7683}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Investor.Infrastructure", "Services\Investor\Investor.Infrastructure\Investor.Infrastructure.csproj", "{1EE45C4B-88CF-47AE-9CBD-FB26609BFB34}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Commission.Infrastructure", "Services\Commission\Commission.Infrastructure\Commission.Infrastructure.csproj", "{1EE45C4B-88CF-47AE-9CBD-FB26609BFB34}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Host", "Host", "{F9DCC5E4-FB11-40EB-A736-E3CF89DFFDE8}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebHost.Extensions", "BuildingBlocks\Host\WebHost.Extensions\WebHost.Extensions.csproj", "{765E8364-73D6-4415-BECC-83FC601AB8ED}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Investor.UnitTests", "Services\Investor\Investor.UnitTests\Investor.UnitTests.csproj", "{5F82C1B6-6549-4635-A27D-822C6ECDC52C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Commission.UnitTests", "Services\Commission\Commission.UnitTests\Commission.UnitTests.csproj", "{5F82C1B6-6549-4635-A27D-822C6ECDC52C}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{73204FBC-47CD-49C2-B3CD-A5ED39FC0248}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Investor.FunctionalTests", "Services\Investor\Investor.FunctionalTests\Investor.FunctionalTests.csproj", "{A29D67F5-62A6-426F-835E-44619589220F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Commission.FunctionalTests", "Services\Commission\Commission.FunctionalTests\Commission.FunctionalTests.csproj", "{A29D67F5-62A6-426F-835E-44619589220F}"
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{D2CCF277-0617-410C-B7C7-8EDBFC13DF3E}"
 EndProject

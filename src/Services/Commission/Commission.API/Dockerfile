@@ -23,12 +23,18 @@ COPY ["NuGet.config", ""]
 RUN dotnet restore "MT-Space.sln"
 
 COPY . .
-WORKDIR "/src/Client/WebStatus"
+WORKDIR "/src/Services/Commission/Commission.API"
 RUN dotnet publish --no-restore -c Release -o /app
+
+FROM build as unittest
+WORKDIR "/src/Services/Commission/Commission.UnitTests"
+
+FROM build as functionaltest
+WORKDIR "/src/Services/Commission/Commission.FunctionalTests"
 
 FROM build AS publish
 
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app .
-ENTRYPOINT ["dotnet", "WebStatus.dll"]
+ENTRYPOINT ["dotnet", "Commission.API.dll"]
