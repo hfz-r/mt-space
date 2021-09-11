@@ -1,25 +1,24 @@
-﻿using AHAM.Services.Commission.API.Application.Validations;
-using AHAM.Services.Commission.Infrastructure.Paging;
-using AHAM.Services.Commission.Investor.Grpc;
-using FluentValidation;
+﻿using AHAM.Services.Commission.Infrastructure.Paging;
 using MediatR;
-using Microsoft.Extensions.Logging;
 using Inv = AHAM.Services.Commission.Domain.AggregatesModel.InvestorAggregate.Investor;
 
 namespace AHAM.Services.Commission.API.Application.Queries
 {
     public class GetInvestorsQuery : IRequest<IPaginate<Inv>>
     {
-        public GetInvestorsRequest Request { get; set; }
-    }
-
-    public class InvestorQueryValidator : AbstractValidator<GetInvestorsQuery>
-    {
-        public InvestorQueryValidator(ILogger<InvestorQueryValidator> logger)
+        public GetInvestorsQuery(string investorId, string investorName, int index, int size, int from)
         {
-            RuleFor(x => x.Request).SetValidator(new GetInvestorsQueryValidator());
-
-            logger.LogTrace("----- INSTANCE CREATED - {ClassName}", GetType().Name);
+            InvestorId = investorId;
+            InvestorName = investorName;
+            Index = index;
+            Size = size;
+            From = from;
         }
+
+        public string InvestorId { get; }
+        public string InvestorName { get; }
+        public int Index { get; }
+        public int Size { get; }
+        public int From { get; }
     }
 }

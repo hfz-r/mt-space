@@ -32,7 +32,7 @@ namespace AHAM.Services.Commission.API.Services
             {
                 _logger.LogInformation("Begin call from method {method} for investor get rebates {GetRebatesRequest}", context.Method, request);
 
-                var response = await _mediator.Send(new GetRebatesQuery {Request = request});
+                var response = await _mediator.Send(new GetRebatesQuery(request.InvestorId, request.Coa, request.Index, request.Size, request.From));
 
                 context.Status = response.Count > 0
                     ? new Status(StatusCode.OK, $" get rebates {request} do exist")
@@ -65,7 +65,7 @@ namespace AHAM.Services.Commission.API.Services
             {
                 _logger.LogInformation("Begin call from method {method} for investor {GetInvestorsRequest}", context.Method, request);
 
-                var response = await _mediator.Send(new GetInvestorsQuery {Request = request});
+                var response = await _mediator.Send(new GetInvestorsQuery(request.InvestorId, request.InvestorName, request.Index, request.Size, request.From));
 
                 context.Status = response.Count > 0
                     ? new Status(StatusCode.OK, $" get investor {request} do exist")

@@ -1,4 +1,5 @@
 ﻿using System;
+using AHAM.Services.Commission.Domain.AggregatesModel.InvestorAggregate;
 using AHAM.Services.Commission.Domain.Events;
 using AHAM.Services.Commission.Domain.SeedWork;
 using Newtonsoft.Json;
@@ -7,9 +8,6 @@ namespace AHAM.Services.Commission.Domain.AggregatesModel.FeeRebateAggregate
 {
     public class FeeRebate : Entity, IAggregateRoot
     {
-        [JsonProperty] private string _investorId;
-        [JsonProperty] private string _currencyId;
-
         public string Coa { get; private set; }
         public DateTime SetupDate { get; private set; }
         public string DrCr { get; private set; }
@@ -21,8 +19,9 @@ namespace AHAM.Services.Commission.Domain.AggregatesModel.FeeRebateAggregate
         public string SetupType { get; }
         public string SetupBy { get; }
 
-        public string InvestorId => _investorId;
-        public string Currency => _currencyId;
+        [JsonProperty] private string _investorId;
+        [JsonProperty] private string _currencyId;
+        [JsonProperty] private Investor _investor;
 
         /// <summary>
         /// ef ctor
@@ -61,6 +60,9 @@ namespace AHAM.Services.Commission.Domain.AggregatesModel.FeeRebateAggregate
         }
 
         #endregion
+
+        public string GetCurrency() => _currencyId;
+        public (string id, string name) GetInvestor() => (_investor.InvestorId, _investor.InvestorName);
 
         public void SetCoa(string coa) => Coa = coa;
         public void SetDrCr(string drcr) => DrCr = drcr;

@@ -1,7 +1,7 @@
 {
   "swagger": "2.0",
   "info": {
-    "title": "AHAM MT-Space - Investor HTTP API",
+    "title": "AHAM MT-Space - Commission HTTP API",
     "version": "1.0"
   },
   "tags": [
@@ -17,6 +17,65 @@
     "application/json"
   ],
   "paths": {
+    "/investors": {
+      "get": {
+        "summary": "List investors",
+        "description": "List all investors from database.",
+        "operationId": "InvestorService_GetInvestors",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/investorGetInvestorsResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "investorId",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "investorName",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "index",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "from",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "InvestorService"
+        ]
+      }
+    },
     "/rebate/create": {
       "post": {
         "summary": "Add rebate",
@@ -135,8 +194,15 @@
     "dtoFeeRebateDTO": {
       "type": "object",
       "properties": {
-        "investor": {
-          "$ref": "#/definitions/dtoInvestorDTO"
+        "id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "investorId": {
+          "type": "string"
+        },
+        "investorName": {
+          "type": "string"
         },
         "coa": {
           "type": "string"
@@ -191,9 +257,6 @@
     "investorCreateRebateRequest": {
       "type": "object",
       "properties": {
-        "investorId": {
-          "type": "string"
-        },
         "rebates": {
           "type": "array",
           "items": {
@@ -213,6 +276,17 @@
         }
       }
     },
+    "investorGetInvestorsResponse": {
+      "type": "object",
+      "properties": {
+        "investors": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/dtoInvestorDTO"
+          }
+        }
+      }
+    },
     "investorGetRebatesResponse": {
       "type": "object",
       "properties": {
@@ -221,10 +295,6 @@
           "items": {
             "$ref": "#/definitions/dtoFeeRebateDTO"
           }
-        },
-        "pageCount": {
-          "type": "integer",
-          "format": "int32"
         }
       }
     },

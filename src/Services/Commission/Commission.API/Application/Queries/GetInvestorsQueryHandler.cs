@@ -32,18 +32,18 @@ namespace AHAM.Services.Commission.API.Application.Queries
                 var investors = await repository.GetPagedListAsync(
                     queryExp: q =>
                     {
-                        if (!string.IsNullOrEmpty(query.Request.InvestorId))
-                            q = q?.Where(i => i.InvestorId == query.Request.InvestorId);
-                        if (!string.IsNullOrEmpty(query.Request.InvestorName))
-                            q = q?.Where(i => i.InvestorName == query.Request.InvestorName);
+                        if (!string.IsNullOrEmpty(query.InvestorId))
+                            q = q.Where(i => i.InvestorId == query.InvestorId);
+                        if (!string.IsNullOrEmpty(query.InvestorName))
+                            q = q.Where(i => i.InvestorName == query.InvestorName);
                         return q;
                     },
-                    orderBy: q => q.OrderBy(i => i.InvestorId),
-                    cacheKey: cache => cache.PrepareKeyForDefaultCache(Keys<Inv>.ListCacheKey, query.Request.Size, query.Request.InvestorId, query.Request.InvestorName),
+                    orderBy: q => q.OrderBy(i => i.InvestorName),
+                    cacheKey: cache => cache.PrepareKeyForDefaultCache(Keys<Inv>.ListCacheKey, query.Size, query.InvestorId, query.InvestorName),
                     disableTracking: true,
-                    index: query.Request.Index,
-                    size: query.Request.Size,
-                    from: query.Request.From,
+                    index: query.Index,
+                    size: query.Size,
+                    from: query.From,
                     cancellationToken: cancellationToken
                 );
 

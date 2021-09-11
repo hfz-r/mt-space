@@ -3,23 +3,25 @@ syntax = "proto3";
 package aham.dto;
 
 option go_package = "aham/dto";
-option csharp_namespace = "AHAM.Services.Dtos.Grpc";
+option csharp_namespace = "AHAM.Services.Commission.Dtos.Grpc";
 
 import "google/protobuf/timestamp.proto";
 
 message FeeRebateDTO {
-    InvestorDTO investor = 1;
-    string coa = 2;
-    string type = 3;
-    string currency = 4;
-    string amc = 5;
-    string channel = 6; 
-    string agent = 7;
-    string plan = 8;
-    string drcr = 9;
-    string setup_type = 10;
-    google.protobuf.Timestamp setup_date = 11;
-    string setup_by = 12;
+    int32 id = 1;
+    string investor_id = 2;
+    string investor_name = 3;
+    string coa = 4;
+    string type = 5;
+    string currency = 6;
+    string amc = 7;
+    string channel = 8; 
+    string agent = 9;
+    string plan = 10;
+    string drcr = 11;
+    string setup_type = 12;
+    google.protobuf.Timestamp setup_date = 13;
+    string setup_by = 14;
 }
   
 message InvestorDTO {

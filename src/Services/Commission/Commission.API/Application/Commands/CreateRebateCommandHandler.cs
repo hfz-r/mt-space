@@ -11,6 +11,7 @@ using AHAM.Services.Commission.Infrastructure.Repositories;
 using AHAM.Services.Commission.Dtos.Grpc;
 using AutoMapper;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
 namespace AHAM.Services.Commission.API.Application.Commands
@@ -37,7 +38,8 @@ namespace AHAM.Services.Commission.API.Application.Commands
             try
             {
                 var o = await repository.GetListAsync(
-                    clientEval: q => q.Where(r => r.InvestorId == command.List[0].InvestorId),
+                    queryExp: q => q.Include("_investor"),
+                    clientEval: q => q.Where(r => r.GetInvestor().id == command.List.First().InvestorId),
                     disableTracking: true,
                     cancellationToken: cancellationToken
                 );
@@ -58,9 +60,13 @@ namespace AHAM.Services.Commission.API.Application.Commands
                             if (r.Coa != dto.Coa) r.SetCoa(dto.Coa);
                             if (r.SetupDate != dto.SetupDate.ToDateTime()) r.SetSetupDate(dto.SetupDate.ToDateTime());
                             if (r.DrCr != dto.Drcr) r.SetDrCr(dto.Drcr);
-                            if (r.Currency != dto.Currency) r.SetCurrency(dto.Currency);
+                            if (r.GetCurrency() != dto.Currency) r.SetCurrency(dto.Currency);
                         }
-                        else r = _mapper.Map<FeeRebateDTO, FeeRebate>(dto);
+                        else
+                        {
+                            if (dto.Type == "deleted") continue;
+                            r = _mapper.Map<FeeRebateDTO, FeeRebate>(dto);
+                        }
 
                         l.Add(r);
                     }

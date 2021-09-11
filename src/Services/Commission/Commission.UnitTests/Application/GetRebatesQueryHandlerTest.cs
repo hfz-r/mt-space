@@ -10,7 +10,6 @@ using AHAM.Services.Commission.Domain.SeedWork;
 using AHAM.Services.Commission.Infrastructure;
 using AHAM.Services.Commission.Infrastructure.Paging;
 using AHAM.Services.Commission.Infrastructure.Repositories;
-using AHAM.Services.Commission.Investor.Grpc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using MockQueryable.Moq;
@@ -56,7 +55,7 @@ namespace Commission.UnitTests.Application
             CreateMockDbSet(FakeRebates().AsQueryable());
 
             //Act 
-            var fakeQuery = new GetRebatesQuery {Request = new GetRebatesRequest {Size = 10}};
+            var fakeQuery = new GetRebatesQuery("", "", 0, 10, 0);
 
             var handler = new GetRebatesQueryHandler(_workerMock.Object, _loggerMock.Object);
             var fakeResult = await handler.Handle(fakeQuery, CancellationToken.None);
@@ -72,15 +71,15 @@ namespace Commission.UnitTests.Application
             CreateMockDbSet(FakeRebatesAndInvestor().AsQueryable());
 
             //Act 
-            var fakeQuery = new GetRebatesQuery {Request = new GetRebatesRequest {Size = 10}};
-            var fakeQueryParams = new GetRebatesQuery { Request = new GetRebatesRequest { Coa = "CRFR0011" } };
+            var fakeQuery = new GetRebatesQuery("", "", 0, 10, 0);
+            var fakeQueryParams = new GetRebatesQuery("", "CRFR0011", 0, 10, 0);
 
             var handler = new GetRebatesQueryHandler(_workerMock.Object, _loggerMock.Object);
             var fakeResult = await handler.Handle(fakeQuery, CancellationToken.None);
             var fakeResultParams = await handler.Handle(fakeQueryParams, CancellationToken.None);
 
             //Assert
-            Assert.NotEmpty(fakeResult.Items.Select(x => x.InvestorId));
+            Assert.NotEmpty(fakeResult.Items.Select(x => x.GetInvestor().id));
             Assert.Equal(1, fakeResultParams.Count);
         }
     }

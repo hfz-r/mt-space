@@ -30,7 +30,7 @@ static_resources:
               - match: 
                   prefix: "/aham.investor.InvestorService"
                 route:  
-                  cluster: investor_service
+                  cluster: commission_service
                   timeout: 120s 
           http_filters:
           - name: envoy.filters.http.grpc_json_transcoder
@@ -67,7 +67,7 @@ static_resources:
               - match: 
                   prefix: "/aham.investor.InvestorService"
                 route:  
-                  cluster: investor_service
+                  cluster: commission_service
                   timeout: 120s 
           http_filters:
           - name: envoy.filters.http.grpc_json_transcoder
@@ -92,7 +92,7 @@ static_resources:
               private_key:
                 filename: "/etc/envoy/tls/key.pem"
   clusters:
-  - name: investor_service
+  - name: commission_service
     connect_timeout: 0.25s
     type: logical_dns
     lb_policy: round_robin
@@ -109,7 +109,7 @@ static_resources:
         - endpoint:
             address:
               socket_address:
-                address: investor-service
+                address: commission-service
                 port_value: 81
 admin:
   access_log_path: /tmp/admin_access.log

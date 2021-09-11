@@ -1,5 +1,4 @@
 ﻿using AHAM.Services.Commission.Domain.AggregatesModel.FeeRebateAggregate;
-using AHAM.Services.Commission.Domain.AggregatesModel.InvestorAggregate;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -45,7 +44,7 @@ namespace AHAM.Services.Commission.Infrastructure.EntityConfigurations
             //var navigation = builder.Metadata.FindNavigation(nameof(SomeCollectionProperty));
             //navigation.SetPropertyAccessMode(PropertyAccessMode.Field);
 
-            builder.HasOne<Investor>()
+            builder.HasOne("_investor")
                 .WithMany()
                 .HasForeignKey("_investorId");
 

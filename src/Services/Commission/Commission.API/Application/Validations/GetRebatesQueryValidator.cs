@@ -1,9 +1,9 @@
-﻿using AHAM.Services.Commission.Investor.Grpc;
+﻿using AHAM.Services.Commission.API.Application.Queries;
 using FluentValidation;
 
 namespace AHAM.Services.Commission.API.Application.Validations
 {
-    public class GetRebatesQueryValidator : AbstractValidator<GetRebatesRequest>
+    public class GetRebatesQueryValidator : AbstractValidator<GetRebatesQuery>
     {
         public GetRebatesQueryValidator()
         {

@@ -26,9 +26,10 @@ namespace AHAM.Services.Commission.API.Infrastructure.AutoMapper
                     opt.NullSubstitute(string.Empty);
                 })
                 .ForMember(d => d.Coa, opt => opt.MapFrom(src => src.Coa))
-                .ForMember(d => d.Currency, opt => opt.MapFrom(src => src.Currency))
+                .ForMember(d => d.Currency, opt => opt.MapFrom(src => src.GetCurrency()))
                 .ForMember(d => d.Drcr, opt => opt.MapFrom(src => src.DrCr))
-                .ForMember(d => d.InvestorId, opt => opt.MapFrom(src => src.InvestorId))
+                .ForMember(d => d.InvestorId, opt => opt.MapFrom(src => src.GetInvestor().id))
+                .ForMember(d => d.InvestorName, opt => opt.MapFrom(src => src.GetInvestor().name))
                 .ForMember(d => d.Plan, opt =>
                 {
                     opt.MapFrom(src => src.Plan);

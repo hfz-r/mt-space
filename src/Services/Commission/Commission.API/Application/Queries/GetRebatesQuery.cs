@@ -1,25 +1,24 @@
-﻿using AHAM.Services.Commission.API.Application.Validations;
-using AHAM.Services.Commission.Domain.AggregatesModel.FeeRebateAggregate;
+﻿using AHAM.Services.Commission.Domain.AggregatesModel.FeeRebateAggregate;
 using AHAM.Services.Commission.Infrastructure.Paging;
-using AHAM.Services.Commission.Investor.Grpc;
-using FluentValidation;
 using MediatR;
-using Microsoft.Extensions.Logging;
 
 namespace AHAM.Services.Commission.API.Application.Queries
 {
     public class GetRebatesQuery : IRequest<IPaginate<FeeRebate>>
     {
-        public GetRebatesRequest Request { get; set; }
-    }
-
-    public class RebateQueryValidator : AbstractValidator<GetRebatesQuery>
-    {
-        public RebateQueryValidator(ILogger<RebateQueryValidator> logger)
+        public GetRebatesQuery(string investorId, string coa, int index, int size, int from)
         {
-            RuleFor(x => x.Request).SetValidator(new GetRebatesQueryValidator());
-
-            logger.LogTrace("----- INSTANCE CREATED - {ClassName}", GetType().Name);
+            InvestorId = investorId;
+            Coa = coa;
+            Index = index;
+            Size = size;
+            From = from;
         }
+
+        public string InvestorId { get; }
+        public string Coa { get; }
+        public int Index { get; }
+        public int Size { get; }
+        public int From { get; }
     }
 }

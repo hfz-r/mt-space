@@ -33,23 +33,20 @@ namespace AHAM.Services.Commission.API.Application.Queries
                 var rebates = await repository.GetPagedListAsync(
                     queryExp: q =>
                     {
-                        if (!string.IsNullOrEmpty(query.Request.Coa)) q = q?.Where(r => r.Coa == query.Request.Coa);
-                        return q;
+                        if (!string.IsNullOrEmpty(query.Coa)) q = q.Where(r => r.Coa == query.Coa);
+                        return q.Include("_investor");
                     },
                     clientEval: q =>
                     {
-                        if (!string.IsNullOrEmpty(query.Request.InvestorId)) 
-                            q = q
-                                .Where(r => r.InvestorId == query.Request.InvestorId)
-                                .OrderBy(r => r.InvestorId);
+                        if (!string.IsNullOrEmpty(query.InvestorId)) q = q.Where(r => r.GetInvestor().id == query.InvestorId);
                         return q;
                     },
                     orderBy: q => q .OrderByDescending(r => r.SetupDate),
-                    cacheKey: cache => cache.PrepareKeyForDefaultCache(Keys<FeeRebate>.ListCacheKey, query.Request.Size, query.Request.InvestorId, query.Request.Coa),
+                    cacheKey: cache => cache.PrepareKeyForDefaultCache(Keys<FeeRebate>.ListCacheKey, query.Size, query.InvestorId, query.Coa),
                     disableTracking: true,
-                    index: query.Request.Index,
-                    size: query.Request.Size,
-                    from: query.Request.From,
+                    index: query.Index,
+                    size: query.Size,
+                    from: query.From,
                     cancellationToken: cancellationToken
                 );
 

@@ -3,7 +3,7 @@ syntax = "proto3";
 package aham.investor;
 
 option go_package = "aham/investor";
-option csharp_namespace = "AHAM.Services.Investor.Grpc";
+option csharp_namespace = "AHAM.Services.Commission.Investor.Grpc";
 
 import "google/api/annotations.proto";
 import "protoc-gen-openapiv2/options/annotations.proto";
@@ -12,7 +12,7 @@ import "dto.proto";
 option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
   host:"localhost:8080";
   info: {
-    title: "AHAM MT-Space - Investor HTTP API";
+    title: "AHAM MT-Space - Commission HTTP API";
     version: "1.0";
   };
 };
@@ -25,6 +25,16 @@ service InvestorService {
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       summary: "List rebates"
       description: "List all fee rebates from database."
+    };
+  }
+
+  rpc GetInvestors(GetInvestorsRequest) returns (GetInvestorsResponse) {
+    option (google.api.http) = {
+      get: "/investors"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "List investors"
+      description: "List all investors from database."
     };
   }
 
@@ -50,12 +60,22 @@ message GetRebatesRequest {
 
 message GetRebatesResponse { 
   repeated aham.dto.FeeRebateDTO rebates = 1; 
-  int32 page_count = 2;
+}
+
+message GetInvestorsRequest {
+  string investor_id = 1;
+  string investor_name = 2;
+  int32 index = 3;
+  int32 size = 4;
+  int32 from = 5;
+}
+
+message GetInvestorsResponse {
+  repeated aham.dto.InvestorDTO investors = 1; 
 }
 
 message CreateRebateRequest {
-  string investor_id = 1;
-  repeated aham.dto.FeeRebateDTO rebates = 2;
+  repeated aham.dto.FeeRebateDTO rebates = 1;
 }
 
 message CreateRebateResponse {

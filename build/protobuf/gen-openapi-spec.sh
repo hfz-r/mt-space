@@ -19,10 +19,10 @@ while [[ $# -gt 0 ]]; do
     esac
 done
 
-if [[ $api == "investor" ]]; then
-    echo "Generating OpenAPI spec for Investor API..."
-    target_dir=${ROOT_DIR}/src/Services/Investor/Investor.API
-    proto_file="$api".proto
+if [[ $api == "commission" ]]; then
+    echo "Generating OpenAPI spec for Commission API..."
+    target_dir=${ROOT_DIR}/src/Services/Commission/Commission.API
+    proto_file=investor.proto
 fi
 
 protoc -I$INCLUDE_PATH -I$PROTO_PATH \
