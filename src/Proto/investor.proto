@@ -6,7 +6,7 @@ option go_package = "aham/investor";
 option csharp_namespace = "AHAM.Services.Commission.Investor.Grpc";
 
 import "google/api/annotations.proto";
-import "dto.proto";
+import "commission_dto.proto";
 
 service InvestorService {
   rpc GetRebates(GetRebatesRequest) returns (GetRebatesResponse) {

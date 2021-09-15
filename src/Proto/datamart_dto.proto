@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+package aham.dto;
+
+option go_package = "aham/dto";
+option csharp_namespace = "AHAM.Services.Datamart.Dtos.Grpc";
+
+import "google/protobuf/timestamp.proto";
+
+message CimbSplitDTO {
+    string id = 1;
+    google.protobuf.Timestamp effective_from = 2;
+    string product_code = 3;
+    string product_name = 4;
+    string agent_id = 5;
+    string agent_name = 6;
+    string investor_id = 7;
+    string investor_name = 8;
+    string plan = 9;
+    int32 fee_type = 10;
+    int32 basis = 11;
+    double amount_from = 12;
+    double amount_to = 13;
+    double rate = 14;
+}

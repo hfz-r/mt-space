@@ -1,0 +1,47 @@
+syntax = "proto3";
+
+package aham.cimbsplit;
+
+option go_package = "aham/cimbsplit";
+option csharp_namespace = "AHAM.Services.Datamart.CimbSplit.Grpc";
+
+import "google/api/annotations.proto";
+import "datamart_dto.proto";
+
+service CimbSplitService{
+    rpc GetCimb(GetCimbRequest) returns (GetCimbResponse) {
+        option (google.api.http) = {
+          get: "/cimbsplit"
+        };
+    }
+
+    rpc CreateCimb(stream CreateCimbRequest) returns (CreateCimbResponse) {
+        option (google.api.http) = {
+          post : "/cimbsplit/create"
+          body : "*"
+        };
+    }
+}
+
+message GetCimbRequest {
+    string product_code = 1;
+    string agent_id = 2;
+    string investor_id = 3;
+    int32 fee_type = 4;
+    int32 index = 5;
+    int32 size = 6;
+    int32 from = 7;
+}
+
+message GetCimbResponse { 
+    repeated aham.dto.CimbSplitDTO cimbs = 1; 
+}   
+
+message CreateCimbRequest {
+    repeated aham.dto.CimbSplitDTO cimb = 1;
+}
+
+message CreateCimbResponse {
+    bool status = 1;
+    string message = 2;
+}

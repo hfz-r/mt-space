@@ -2,23 +2,20 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-    <UserSecretsId>aham-Commission.API-202107040426</UserSecretsId>
+    <UserSecretsId>aham-Datamart.API-202109121257</UserSecretsId>
     <AssetTargetFallback>$(AssetTargetFallback);portable-net45+win8+wp8+wpa81;</AssetTargetFallback>
     <DockerComposeProjectPath>..\..\..\..\docker-compose.dcproj</DockerComposeProjectPath>
     <GenerateErrorForMissingTargetingPacks>false</GenerateErrorForMissingTargetingPacks>
     <IsTransformWebConfigDisabled>true</IsTransformWebConfigDisabled>
     <LangVersion>preview</LangVersion>
-    <RootNamespace>AHAM.Services.Commission.API</RootNamespace>
-    <AssemblyName>Commission.API</AssemblyName>
+    <RootNamespace>AHAM.Services.Datamart.API</RootNamespace>
+    <AssemblyName>Datamart.API</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\BuildingBlocks\Caching\RedisCache\RedisCache.csproj" />
     <ProjectReference Include="..\..\..\BuildingBlocks\EventBus\EventBusRabbitMQ\EventBusRabbitMQ.csproj" />
     <ProjectReference Include="..\..\..\BuildingBlocks\EventBus\EventBus\EventBus.csproj" />
-    <ProjectReference Include="..\..\..\BuildingBlocks\EventBus\IntegrationEventLog\IntegrationEventLog.csproj" />
-    <ProjectReference Include="..\..\..\BuildingBlocks\Host\WebHost.Extensions\WebHost.Extensions.csproj" />
-    <ProjectReference Include="..\Commission.Domain\Commission.Domain.csproj" />
-    <ProjectReference Include="..\Commission.Infrastructure\Commission.Infrastructure.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -28,8 +25,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Protobuf Include="..\..\..\Proto\investor.proto" GrpcServices="Both" Link="Proto\investor.proto" />
-    <Protobuf Include="..\..\..\Proto\commission_dto.proto" GrpcServices="None" Link="Proto\commission_dto.proto" />
+    <Protobuf Include="..\..\..\Proto\cimbsplit.proto" GrpcServices="Both" Link="Proto\cimbsplit.proto" />
+    <Protobuf Include="..\..\..\Proto\datamart_dto.proto" GrpcServices="None" Link="Proto\datamart_dto.proto" />
   </ItemGroup>
 
   <ItemGroup>
@@ -38,6 +35,7 @@
     <PackageReference Include="AspNetCore.HealthChecks.UI.Client" Version="3.0.0" />
     <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="5.0.1" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.0.1" />
+    <PackageReference Include="Dapper" Version="2.0.30" />
     <PackageReference Include="Google.Api.CommonProtos" Version="2.2.0" />
     <PackageReference Include="Grpc.AspNetCore" Version="2.33.1" />
     <PackageReference Include="FluentValidation.AspNetCore" Version="8.6.0" />
@@ -51,7 +49,6 @@
     <PackageReference Include="Microsoft.AspNetCore.HealthChecks" Version="1.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.0" />
     <PackageReference Include="Microsoft.NETCore.Platforms" Version="3.1.0" />
-    <PackageReference Include="Polly" Version="7.2.0" />
     <PackageReference Include="Serilog.AspNetCore" Version="3.2.0" />
     <PackageReference Include="Serilog.Enrichers.Environment" Version="2.1.3" />
     <PackageReference Include="Serilog.Settings.Configuration" Version="3.1.1-dev-00216" />
